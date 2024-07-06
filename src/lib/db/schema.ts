@@ -1,8 +1,7 @@
 import {
-  boolean,
   pgEnum,
   pgTable,
-  serial,
+  primaryKey,
   text,
   timestamp,
   uuid,
@@ -10,6 +9,12 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const difficultyEnum = pgEnum('difficulty', ['easy', 'medium', 'hard']);
+export const answerType = pgEnum('answerType', [
+  'unassisted',
+  'withQuestionTypeHint',
+  'withTheory',
+  'withCode',
+]);
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey(),
@@ -22,6 +27,8 @@ export const questions = pgTable('questions', {
   link: varchar('link').notNull(),
 });
 
+// Represents an instance of a question prompted to a user.
+// A user can be asked the same question multiple times, so (questionId, userId) is not unique
 export const instances = pgTable('instances', {
   id: uuid('id').primaryKey(),
   questionId: uuid('questionId')
@@ -30,6 +37,26 @@ export const instances = pgTable('instances', {
   userId: uuid('userId')
     .references(() => users.id)
     .notNull(),
-  note: text('note').notNull(),
+  answerType: answerType('answerType').notNull(),
+  queuedFor: timestamp('queuedFor'), // Time queued for user to answer
   answeredAt: timestamp('answeredAt'), // Unanswered: null value
 });
+
+// A single user's notes on a question
+export const userNotes = pgTable(
+  'userNotes',
+  {
+    userId: uuid('userId')
+      .references(() => users.id)
+      .notNull(),
+    questionId: uuid('questionId')
+      .references(() => questions.id)
+      .notNull(),
+    content: text('content').notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.userId, table.questionId] }),
+    };
+  }
+);

@@ -1,5 +1,5 @@
 {
-  "id": "edff0911-45c1-49d1-8d26-6e3b3f97dfea",
+  "id": "ceab9d5f-aec1-40b7-a8b7-065af23b117f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -18,17 +18,24 @@
           "name": "questionId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "note": {
-          "name": "note",
-          "type": "text",
+        "answerType": {
+          "name": "answerType",
+          "type": "answerType",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "queuedFor": {
+          "name": "queuedFor",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -86,24 +93,87 @@
           "type": "difficulty",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "category": {
           "name": "category",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "link": {
           "name": "link",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.userNotes": {
+      "name": "userNotes",
+      "schema": "",
+      "columns": {
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "questionId": {
+          "name": "questionId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "userNotes_userId_users_id_fk": {
+          "name": "userNotes_userId_users_id_fk",
+          "tableFrom": "userNotes",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "userNotes_questionId_questions_id_fk": {
+          "name": "userNotes_questionId_questions_id_fk",
+          "tableFrom": "userNotes",
+          "tableTo": "questions",
+          "columnsFrom": [
+            "questionId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "userNotes_userId_questionId_pk": {
+          "name": "userNotes_userId_questionId_pk",
+          "columns": [
+            "userId",
+            "questionId"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.users": {
@@ -124,6 +194,16 @@
     }
   },
   "enums": {
+    "public.answerType": {
+      "name": "answerType",
+      "schema": "public",
+      "values": [
+        "unassisted",
+        "withQuestionTypeHint",
+        "withTheory",
+        "withCode"
+      ]
+    },
     "public.difficulty": {
       "name": "difficulty",
       "schema": "public",
