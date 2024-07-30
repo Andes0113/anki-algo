@@ -1,14 +1,16 @@
-import { pgTable, serial, text, varchar } from 'drizzle-orm/pg-core';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 import * as schema from './schema';
 
-// or
 const client = new Client({
   database: 'ankialgodev',
 });
 
-await client.connect();
+try {
+  await client.connect();
+} catch (error) {
+  console.log(`Error connecting to db: ${error}`);
+}
 const db = drizzle(client, { schema });
 
 export default db;
