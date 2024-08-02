@@ -17,7 +17,10 @@ export const answerType = pgEnum('answerType', [
 ]);
 
 export const users = pgTable('users', {
-  id: uuid('id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
+  provider: varchar('provider'),
+  providerAccountId: varchar('providerAccountId'),
+  email: varchar('email'),
 });
 
 export const questions = pgTable('questions', {

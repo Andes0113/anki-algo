@@ -34,7 +34,10 @@ CREATE TABLE IF NOT EXISTS "userNotes" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
-	"id" uuid PRIMARY KEY NOT NULL
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"provider" varchar,
+	"providerAccountId" varchar,
+	"email" varchar
 );
 --> statement-breakpoint
 DO $$ BEGIN

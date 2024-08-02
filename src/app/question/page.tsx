@@ -1,6 +1,15 @@
-import { getNextQuestionInstance, getQuestionById } from '@/lib/db/questions';
+import {
+  getNextQuestionInstance,
+  getQuestionById,
+} from '@/server/db/questions';
+import { getSession, useSession } from 'next-auth/react';
+import { cookies } from 'next/headers';
 
 async function getNextQuestion(userId: string) {
+  const session = await getSession();
+  console.log('SESSION', session);
+  const c: any = cookies();
+  console.log(c);
   try {
     const instance = await getNextQuestionInstance.execute({ userId });
 
