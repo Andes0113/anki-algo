@@ -6,11 +6,8 @@ const client = new Client({
   database: 'ankialgodev',
 });
 
-try {
-  await client.connect();
-} catch (error) {
-  console.log(`Error connecting to db: ${error}`);
-}
+await client.connect();
+
 const db = drizzle(client, { schema });
 
 export default db;

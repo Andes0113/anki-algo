@@ -1,17 +1,22 @@
+import { getServerAuthSession } from '@/server/auth';
 import {
   getNextQuestionInstance,
   getQuestionById,
 } from '@/server/db/questions';
-import { getSession, useSession } from 'next-auth/react';
-import { cookies } from 'next/headers';
 
-async function getNextQuestion(userId: string) {
-  const session = await getSession();
+async function getNextQuestion() {
+  const session = await getServerAuthSession();
+
   console.log('SESSION', session);
-  const c: any = cookies();
-  console.log(c);
+
+  if (!session || !session.user.id) {
+    return { error: new Error('Invalid session') };
+  }
+
   try {
-    const instance = await getNextQuestionInstance.execute({ userId });
+    const instance = await getNextQuestionInstance.execute({
+      userId: session?.user.id,
+    });
 
     if (!instance) return { error: new Error('No queued question found') };
 
@@ -21,16 +26,14 @@ async function getNextQuestion(userId: string) {
 
     return { instance, question };
   } catch (err) {
-    return { error: new Error('database error: ', { cause: err }) };
+    return { error: err };
   }
 }
 
 export default async function QuestionPage() {
-  const { instance, question, error } = await getNextQuestion(
-    '12e2c6ea-c7a8-4ff2-bdc7-c17ad3691f9c' // Placeholder
-  );
+  const { instance, question, error } = await getNextQuestion();
   if (error) {
-    return <div>Error fetching question: {error.message}</div>;
+    console.log(error);
   }
 
   return <div>Hello</div>;

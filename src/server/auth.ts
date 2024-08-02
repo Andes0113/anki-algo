@@ -1,4 +1,8 @@
-import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
+import NextAuth, {
+  DefaultSession,
+  getServerSession,
+  NextAuthOptions,
+} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import { users } from '@/server/db/schema';
@@ -30,10 +34,10 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account, profile }) {
       console.log(token, user, account, profile);
 
-      if (!user || !account) return {};
+      if (!user || !account) return token;
 
       const { email } = user;
-      if (!email) return {};
+      if (!email) return token;
 
       const { provider, providerAccountId } = account;
 
@@ -48,14 +52,21 @@ export const authOptions: NextAuthOptions = {
         token.error = error.message;
       }
 
-      if (dbUser) token.userId = user.id;
+      if (dbUser) token.userId = dbUser.id;
 
       console.log('TOKEN', token);
 
       return token;
     },
-    async session({ session, token, user }) {
-      return { ...session, userId: token.userId };
+    async session({ session, token }) {
+      console.log('SESSION TOKEN', token);
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.userId,
+        },
+      };
     },
     async signIn({ user, account, profile }) {
       return true;
@@ -63,3 +74,5 @@ export const authOptions: NextAuthOptions = {
   },
   secret: 'FAKE_SECRET',
 };
+
+export const getServerAuthSession = () => getServerSession(authOptions);
