@@ -1,3 +1,4 @@
+import { packageError } from '@/common/utils';
 import { getServerAuthSession } from '@/server/auth';
 import {
   getNextQuestionInstance,
@@ -6,8 +7,6 @@ import {
 
 async function getNextQuestion() {
   const session = await getServerAuthSession();
-
-  console.log('SESSION', session);
 
   if (!session || !session.user.id) {
     return { error: new Error('Invalid session') };
@@ -25,16 +24,15 @@ async function getNextQuestion() {
     });
 
     return { instance, question };
-  } catch (err) {
-    return { error: err };
+  } catch (error: unknown) {
+    return { error: packageError(error) };
   }
 }
 
 export default async function QuestionPage() {
   const { instance, question, error } = await getNextQuestion();
-  if (error) {
-    console.log(error);
-  }
+
+  if (error) return <div>{error.message}</div>;
 
   return <div>Hello</div>;
 }
