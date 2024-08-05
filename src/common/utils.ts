@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function packageError(error: unknown) {
+export function packageError(error: unknown): Error {
   if (error instanceof Error) return error;
 
   let stringified = '[Unable to stringify error]';

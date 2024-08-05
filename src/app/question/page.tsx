@@ -24,8 +24,10 @@ async function getNextQuestion() {
     });
 
     return { instance, question };
-  } catch (error: unknown) {
-    return { error: packageError(error) };
+  } catch (err: unknown) {
+    const error = packageError(err);
+    console.log(error);
+    return { error };
   }
 }
 
