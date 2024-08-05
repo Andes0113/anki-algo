@@ -1,0 +1,37 @@
+version: '3.8'
+
+networks:
+  anki_network:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: postgres_db
+    build:
+      context: docker
+      dockerfile: postgres.dockerfile
+    env_file: .env.local
+    restart: always
+    ports:
+      - 5432:5432
+    expose:
+      - '5432'
+    networks:
+      - anki_network
+
+  next-app:
+    container_name: anki-algo
+    build:
+      context: .
+      dockerfile: docker/next.dev.dockerfile
+    env_file: .env.local
+    environment:
+      PGHOST: postgres_db
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - anki_network
