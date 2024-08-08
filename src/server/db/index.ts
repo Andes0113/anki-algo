@@ -1,12 +1,10 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import * as schema from './schema';
 
-const client = new Client({
-  database: 'ankialgodev',
-});
+const connectionString = process.env.POSTGRES_URL!;
 
-await client.connect();
+export const client = postgres(connectionString, { prepare: false });
 
 const db = drizzle(client, { schema });
 
