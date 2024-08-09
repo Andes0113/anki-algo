@@ -1,6 +1,6 @@
-import { and, eq } from 'drizzle-orm';
+import type { User } from '@/common/types';
+import { eq } from 'drizzle-orm';
 import db from '.';
-import { User } from '@/common/types';
 import { users } from './schema';
 
 export async function findOrCreateUser(
@@ -31,6 +31,6 @@ export async function findOrCreateUser(
 
     return { user };
   } catch (error: unknown) {
-    return { error: new Error('Error finding user') };
+    return { error: new Error('Error finding user', { cause: error }) };
   }
 }

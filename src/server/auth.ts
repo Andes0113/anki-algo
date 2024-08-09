@@ -1,13 +1,7 @@
-import NextAuth, {
-  DefaultSession,
-  getServerSession,
-  NextAuthOptions,
-} from 'next-auth';
+import type { DefaultSession, NextAuthOptions } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
-import { users } from '@/server/db/schema';
-import db from '@/server/db';
-import { User } from '@/common/types';
 import { findOrCreateUser } from '@/server/db/users';
 
 declare module 'next-auth' {
@@ -22,12 +16,12 @@ declare module 'next-auth' {
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID_DEV || '',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET_DEV || '',
+      clientId: process.env.GITHUB_CLIENT_ID_DEV ?? '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET_DEV ?? '',
     }),
   ],
   callbacks: {
@@ -68,7 +62,7 @@ export const authOptions: NextAuthOptions = {
         },
       };
     },
-    async signIn({ user, account, profile }) {
+    async signIn() {
       return true;
     },
   },

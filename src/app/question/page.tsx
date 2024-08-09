@@ -8,7 +8,7 @@ import {
 async function getNextQuestion() {
   const session = await getServerAuthSession();
 
-  if (!session || !session.user.id) {
+  if (!session?.user?.id) {
     return { error: new Error('Invalid session') };
   }
 
@@ -32,7 +32,7 @@ async function getNextQuestion() {
 }
 
 export default async function QuestionPage() {
-  const { instance, question, error } = await getNextQuestion();
+  const { error } = await getNextQuestion();
 
   if (error) return <div>{error.message}</div>;
 
