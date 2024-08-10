@@ -25,9 +25,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account, profile }) {
-      console.log(token, user, account, profile);
-
+    async jwt({ token, user, account }) {
       if (!user || !account) return token;
 
       const { email } = user;

@@ -1,5 +1,5 @@
 'use client';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -8,22 +8,8 @@ import {
   DialogTrigger,
   DialogTitle,
 } from './ui/dialog';
-import { Loader2 } from 'lucide-react';
 
 export default function LoginButton() {
-  const { data: session, status } = useSession();
-  console.log('LOGINBUTTON', session, status);
-
-  if (status === 'loading')
-    return (
-      <Button disabled>
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Loading...
-      </Button>
-    );
-
-  if (session?.user) return <Button onClick={() => signOut()}>Sign Out</Button>;
-
   return (
     <Dialog>
       <DialogTrigger asChild>
