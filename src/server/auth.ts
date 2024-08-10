@@ -33,20 +33,15 @@ export const authOptions: NextAuthOptions = {
 
       const { provider, providerAccountId } = account;
 
-      const { user: dbUser, error } = await findOrCreateUser(
-        email,
-        provider,
-        providerAccountId
-      );
+      const data = await findOrCreateUser(email, provider, providerAccountId);
 
-      if (error) {
-        console.log('ERROR', error);
-        token.error = error.message;
+      if (!data.ok) {
+        console.log('ERROR', data.error);
+        token.error = data.error?.message;
+        return token;
       }
 
-      if (dbUser) token.userId = dbUser.id;
-
-      console.log('TOKEN', token);
+      token.userId = data.value.id;
 
       return token;
     },

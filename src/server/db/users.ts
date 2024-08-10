@@ -1,4 +1,4 @@
-import type { User } from '@/common/types';
+import { Err, Ok, type Result, type User } from '@/lib/types';
 import { eq } from 'drizzle-orm';
 import db from '.';
 import { users } from './schema';
@@ -7,7 +7,7 @@ export async function findOrCreateUser(
   email: string,
   provider: string,
   providerAccountId: string
-): Promise<{ user?: User; error?: Error }> {
+): Promise<Result<User, Error>> {
   try {
     let user = await db.query.users.findFirst({
       where: eq(users.email, email),
@@ -19,18 +19,16 @@ export async function findOrCreateUser(
       user = await db.query.users.findFirst({ where: eq(users.email, email) });
     }
 
-    if (!user) return { error: new Error('Error registering user') };
+    if (!user) return Err(new Error('Error registering user'));
 
     if (user.provider != provider) {
-      return {
-        error: new Error(
-          `Wrong provider for ${email}: Use ${user.provider} instead.`
-        ),
-      };
+      return Err(
+        new Error(`Wrong provider for ${email}: Use ${user.provider} instead.`)
+      );
     }
 
-    return { user };
+    return Ok(user);
   } catch (error: unknown) {
-    return { error: new Error('Error finding user', { cause: error }) };
+    return Err(new Error('Error finding user', { cause: error }));
   }
 }

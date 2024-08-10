@@ -1,4 +1,4 @@
-import { packageError } from '@/common/utils';
+import { packageError } from '@/lib/utils';
 import { getServerAuthSession } from '@/server/auth';
 import {
   getNextQuestionInstance,
