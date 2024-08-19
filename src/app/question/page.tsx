@@ -13,15 +13,11 @@ async function getNextQuestion() {
   }
 
   try {
-    const instance = await getNextQuestionInstance.execute({
-      userId: session?.user.id,
-    });
+    const instance = await getNextQuestionInstance(session.user.id);
 
     if (!instance) return { error: new Error('No queued question found') };
 
-    const question = await getQuestionById.execute({
-      questionId: instance.questionId,
-    });
+    const question = await getQuestionById(instance.questionId);
 
     return { instance, question };
   } catch (err: unknown) {

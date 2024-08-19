@@ -1,21 +1,20 @@
-import { and, eq, isNull, sql } from 'drizzle-orm';
-import db from '.';
-import { instances, questions } from './schema';
+import sql from '.';
 
-export const selectUsers = db.select().from(instances).prepare('selectUsers');
+export const getNextQuestionInstance = async (userId: string) => {
+  const result = await sql`
+    SELECT * FROM instances
+    WHERE userId = ${userId} AND answeredAt IS NULL
+    ORDER BY queuedFor
+    LIMIT 1
+  `;
+  return result[0];
+};
 
-export const getNextQuestionInstance = db.query.instances
-  .findFirst({
-    orderBy: instances.queuedFor,
-    where: and(
-      eq(instances.userId, sql.placeholder('userId')),
-      isNull(instances.answeredAt)
-    ),
-  })
-  .prepare('getNextQueuedQuestion');
-
-export const getQuestionById = db.query.questions
-  .findFirst({
-    where: eq(questions.id, sql.placeholder('questionId')),
-  })
-  .prepare('getQuestionById');
+export const getQuestionById = async (questionId: string) => {
+  const result = await sql`
+    SELECT * FROM questions
+    WHERE id = ${questionId}
+    LIMIT 1
+  `;
+  return result[0];
+};

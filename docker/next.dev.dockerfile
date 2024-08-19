@@ -11,7 +11,6 @@ COPY public ./public
 COPY next.config.js .
 COPY tsconfig.json .
 COPY tailwind.config.ts .
-COPY drizzle.config.ts .
 COPY components.json .
 COPY postcss.config.mjs .
 

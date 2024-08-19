@@ -1,7 +1,5 @@
 import { Err, Ok, type Result, type User } from '@/lib/types';
-import { eq } from 'drizzle-orm';
-import db from '.';
-import { users } from './schema';
+import sql from '.';
 
 export async function findOrCreateUser(
   email: string,
@@ -9,28 +7,29 @@ export async function findOrCreateUser(
   providerAccountId: string
 ): Promise<Result<User, Error>> {
   try {
-    const result = await db.transaction(async (tx) => {
-      // Attempt to insert, or do nothing if the email already exists
-      await tx
-        .insert(users)
-        .values({ email, provider, providerAccountId })
-        .onConflictDoNothing({ target: users.email });
+    const result: User = await sql.begin(async (tx) => {
+      await tx`
+        INSERT INTO users (email, provider, providerAccountId)
+        VALUES (${email}, ${provider}, ${providerAccountId})
+        ON CONFLICT (email) DO NOTHING
+      `;
 
-      // Query the user (whether it was just inserted or already existed)
-      const user = await tx.query.users.findFirst({
-        where: eq(users.email, email),
-      });
+      const user = await tx`
+        SELECT * FROM users
+        WHERE email = ${email}
+        LIMIT 1
+      `;
 
-      if (!user) {
+      if (user.length === 0) {
         throw new Error('Error registering user');
       }
 
-      if (user.provider !== provider) {
-        throw new Error(`Wrong provider for ${email}: Use ${user.provider} instead.`);
+      if (user[0].provider !== provider) {
+        throw new Error(`Wrong provider for ${email}: Use ${user[0].provider} instead.`);
       }
 
-      return user;
-    });
+      return user[0];
+    }) as User;
 
     return Ok(result);
   } catch (error: unknown) {
