@@ -1,9 +1,29 @@
+export type Difficulty = "easy" | "medium" | "hard";
+export type AnswerType = "unassisted" | "withTypeHint" | "withTheory" | "withCode";
+
 export type User = {
   id: string;
   email: string | null;
   provider: string | null;
   providerAccountId: string | null;
 };
+
+export type Question = {
+  id: string;
+  category: string;
+  difficulty: Difficulty;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type Instance = {
+  id: string;
+  questionId: string;
+  userId: string;
+  answerType: AnswerType;
+  queuedFor: Date;
+  answeredAt: Date | null;
+}
 
 export type Result<T, E = undefined> =
   | { ok: true; value: T }
