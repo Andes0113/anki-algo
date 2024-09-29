@@ -1,22 +1,24 @@
-import type { Question, User, Result } from '@/lib/types';
+import type { User, Result, QuestionInstance } from '@/lib/types';
 import { Err, Ok } from '@/lib/types';
 import sql from '.';
 
 export const DB = {
   questions: {
-    async getNextQuestion(userId: string): Promise<Question | undefined> {
+    async getNextQuestion(
+      userId: string
+    ): Promise<QuestionInstance | undefined> {
       const result = await sql`
-                    SELECT "name", description, difficulty, category, link, videoUrl, starterCode, solutionCode
-                    FROM questions
-                    WHERE id = (
+                    SELECT Q."name", Q.description, Q.difficulty, Q.category, Q.link, Q.videoUrl, Q.starterCode, Q.solutionCode
+                    FROM questions Q join (
                       SELECT "questionId"
                       FROM instances
                       WHERE "userId"=${userId}
                       AND "answeredAt" IS NULL
                       LIMIT 1
-                    ) LIMIT 1;
+                    ) I ON Q.id = I."questionId"
+                    LIMIT 1;
                 `;
-      return result[0] as Question;
+      return result[0] as QuestionInstance;
     },
   },
   users: {

@@ -26,6 +26,8 @@ export type Question = {
   updatedAt: Date;
 };
 
+export type QuestionInstance = Question & { instanceId: string };
+
 export type Instance = {
   id: string;
   questionId: string;
