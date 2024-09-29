@@ -1,9 +1,6 @@
 import { packageError } from '@/lib/utils';
 import { getServerAuthSession } from '@/server/auth';
-import {
-  getNextQuestionInstance,
-  getQuestionById,
-} from '@/server/db/questions';
+import { DB } from '@/server/db/query';
 
 async function getNextQuestion() {
   const session = await getServerAuthSession();
@@ -13,13 +10,9 @@ async function getNextQuestion() {
   }
 
   try {
-    const instance = await getNextQuestionInstance(session.user.id);
+    const question = await DB.questions.getNextQuestion(session.user.id);
 
-    if (!instance) return { error: new Error('No queued question found') };
-
-    const question = await getQuestionById(instance.questionId);
-
-    return { instance, question };
+    return { question };
   } catch (err: unknown) {
     const error = packageError(err);
     console.log(error);
@@ -28,9 +21,9 @@ async function getNextQuestion() {
 }
 
 export default async function QuestionPage() {
-  const { error } = await getNextQuestion();
+  const { question, error } = await getNextQuestion();
 
   if (error) return <div>{error.message}</div>;
 
-  return <div>Hello</div>;
+  return <div>{question?.name}</div>;
 }

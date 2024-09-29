@@ -1,5 +1,9 @@
-export type Difficulty = "easy" | "medium" | "hard";
-export type AnswerType = "unassisted" | "withTypeHint" | "withTheory" | "withCode";
+export type Difficulty = 'easy' | 'medium' | 'hard';
+export type AnswerType =
+  | 'unassisted'
+  | 'withTypeHint'
+  | 'withTheory'
+  | 'withCode';
 
 export type User = {
   id: string;
@@ -10,11 +14,17 @@ export type User = {
 
 export type Question = {
   id: string;
+  name: string;
+  description: string;
   category: string;
+  link: string;
+  videoUrl: string;
+  starterCode: string;
+  solutionCode: string;
   difficulty: Difficulty;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 export type Instance = {
   id: string;
@@ -23,7 +33,7 @@ export type Instance = {
   answerType: AnswerType;
   queuedFor: Date;
   answeredAt: Date | null;
-}
+};
 
 export type Result<T, E = undefined> =
   | { ok: true; value: T }

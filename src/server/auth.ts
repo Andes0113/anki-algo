@@ -2,7 +2,7 @@ import type { DefaultSession, NextAuthOptions } from 'next-auth';
 import { getServerSession } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
-import { findOrCreateUser } from '@/server/db/users';
+import { DB } from './db/query';
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {
@@ -33,7 +33,11 @@ export const authOptions: NextAuthOptions = {
 
       const { provider, providerAccountId } = account;
 
-      const data = await findOrCreateUser(email, provider, providerAccountId);
+      const data = await DB.users.findOrCreateUser(
+        email,
+        provider,
+        providerAccountId
+      );
 
       if (!data.ok) {
         console.log('ERROR', data.error);
