@@ -9,15 +9,16 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerAuthSession();
-  console.log('dashboardlayout');
   if (!session?.user.id) {
     redirect('/login');
   }
   return (
     <SessionProvider>
       <Navbar />
-      {session?.user.id}
-      {children}
+      <div className="px-4 py-1">
+        {session?.user.id}
+        {children}
+      </div>
     </SessionProvider>
   );
 }
