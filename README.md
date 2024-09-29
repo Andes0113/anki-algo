@@ -1,36 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AnkiAlgo
 
-## Getting Started
+AnkiAlgo is a platform that aims to be the best way to practice for technical interviews. 
 
-First, run the development server:
+### Spaced Repetition
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+AnkiAlgo, inspired by [Anki Flashcards](https://apps.ankiweb.net/), uses spaced repetition to reinforce concepts and better prepare users for technical interviews.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Adaptive Learning
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+AnkiAlgo adapts to the abilities of each user, assigning questions that correspond to their strengths and weaknesses. If a user needed help to solve a problem, conceptually similar questions are assigned in the future to help users recognize important patterns and cement understanding. 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Staying Disciplined
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Staying disciplined in practice is a problem many people face. AnkiAlgo can provide helpful, but not overwhelming, reminders at times when you're free to get some practice in. 
