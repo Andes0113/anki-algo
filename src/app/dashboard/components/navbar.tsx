@@ -2,6 +2,7 @@ import { ModeToggle } from '@/components/theme-button';
 import SignoutButton from '@/components/signout-button';
 import AnkiAlgoLogo from '../../../../public/ankialgo.webp';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default async function Navbar() {
   return (
@@ -9,7 +10,7 @@ export default async function Navbar() {
       <div className="flex items-center gap-8 text-lg">
         <div className="ml-4 pt-2 px-2">
           <Link href="/dashboard/practice">
-            <img src={AnkiAlgoLogo.src} width={125} />
+            <Image src={AnkiAlgoLogo.src} width={125} alt="" />
           </Link>
         </div>
         <div className="flex items-center gap-4 text-lg">

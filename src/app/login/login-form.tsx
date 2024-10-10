@@ -5,12 +5,13 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AnkiAlgoLogo from '../../../public/ankialgo.webp';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa6';
+import Image from 'next/image';
 
 export default function LoginForm() {
   return (
     <Card className="max-w-lg w-full flex flex-col items-center gap-8 py-8">
       <CardHeader className="w-full flex flex-col items-center">
-        <img src={AnkiAlgoLogo.src} width={250} />
+        <Image src={AnkiAlgoLogo.src} width={250} alt="" />
         <h1 className="text-2xl">Sign in or Create an Account</h1>
       </CardHeader>
       <CardContent className="flex flex-col gap-4 w-full max-w-md">

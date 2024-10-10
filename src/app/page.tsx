@@ -2,6 +2,7 @@ import { buttonVariants } from '@/components/ui/button';
 import AnkiAlgoLogo from '../../public/ankialgo high-res.webp';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       {/* Hero Section */}
       <div className="min-h-screen flex flex-col min-w-full gap-28">
         <div className="flex flex-col gap-8 lg:w-[75%] xl:w-[60%]">
-          <img src={AnkiAlgoLogo.src} />
+          <Image src={AnkiAlgoLogo.src} alt="Anki Algo" />
           <h2 className="text-4xl">
             Your <span className="text-primary">personal trainer</span> for
             mastering the technical interview
