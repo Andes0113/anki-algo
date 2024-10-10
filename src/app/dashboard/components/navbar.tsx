@@ -1,13 +1,9 @@
-import { getServerAuthSession } from '@/server/auth';
-import LoginButton from '@/components/login-button';
 import { ModeToggle } from '@/components/theme-button';
 import SignoutButton from '@/components/signout-button';
 import AnkiAlgoLogo from '../../../../public/ankialgo.webp';
 import Link from 'next/link';
 
 export default async function Navbar() {
-  const session = await getServerAuthSession();
-
   return (
     <div className="w-full flex justify-between items-center">
       <div className="flex items-center gap-8 text-lg">
@@ -33,7 +29,7 @@ export default async function Navbar() {
       </div>
       <div className="text-lg flex justify-end gap-2 p-1 mr-6 items-center">
         <ModeToggle />
-        {session === null ? <LoginButton /> : <SignoutButton />}
+        <SignoutButton />
       </div>
     </div>
   );
