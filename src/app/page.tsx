@@ -17,7 +17,7 @@ export default function Home() {
         </div>
         <div className="flex gap-4 justify-end md:mr-20 items-center">
           <a
-            className="underline-offset-4 underline text-nowrap transition duration-300 hover:text-gray-300"
+            className="underline-offset-4 underline text-nowrap transition duration-300 hover:opacity-75"
             href="#how"
           >
             Learn More

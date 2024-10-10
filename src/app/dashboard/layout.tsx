@@ -15,10 +15,7 @@ export default async function DashboardLayout({
   return (
     <SessionProvider>
       <Navbar />
-      <div className="px-4 py-1">
-        {session?.user.id}
-        {children}
-      </div>
+      <div className="px-4 py-1">{children}</div>
     </SessionProvider>
   );
 }

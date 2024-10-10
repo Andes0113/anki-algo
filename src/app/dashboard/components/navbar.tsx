@@ -10,14 +10,30 @@ export default async function Navbar() {
 
   return (
     <div className="w-full flex justify-between items-center">
-      <div className="text-xl ml-4 pt-2 px-2">
-        <Link href="/dashboard/practice">
-          <img src={AnkiAlgoLogo.src} width={125} />
-        </Link>
+      <div className="flex items-center gap-8 text-lg">
+        <div className="ml-4 pt-2 px-2">
+          <Link href="/dashboard/practice">
+            <img src={AnkiAlgoLogo.src} width={125} />
+          </Link>
+        </div>
+        <div className="flex items-center gap-4 text-lg">
+          <Link
+            className="transition duration-300 hover:opacity-75"
+            href="/dashboard"
+          >
+            Dashboard
+          </Link>
+          <Link
+            className="transition duration-300 hover:opacity-75"
+            href="/dashboard/practice"
+          >
+            Practice
+          </Link>
+        </div>
       </div>
       <div className="text-lg flex justify-end gap-2 p-1 mr-6 items-center">
-        {session === null ? <LoginButton /> : <SignoutButton />}
         <ModeToggle />
+        {session === null ? <LoginButton /> : <SignoutButton />}
       </div>
     </div>
   );
